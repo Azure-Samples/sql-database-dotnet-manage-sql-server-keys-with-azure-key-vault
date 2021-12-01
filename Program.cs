@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using Azure.Identity;
+using Azure.Security.KeyVault.Keys;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.WebKey;
 using Microsoft.Azure.Management.Fluent;
@@ -88,11 +90,15 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                 // Create a SQL server key with Azure Key Vault key.
                 Utilities.Log("Creating a SQL server key with Azure Key Vault key");
 
-                KeyVaultClient kvClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(GetToken));
-                var keyBundle = kvClient.CreateKeyAsync(vault.VaultUri, keyName, Microsoft.Azure.KeyVault.WebKey.JsonWebKeyType.Rsa,
-                    keyOps: Microsoft.Azure.KeyVault.WebKey.JsonWebKeyOperation.AllOperations).GetAwaiter().GetResult();
+                var kvClient = new KeyClient(vaultUri: new Uri(vault.VaultUri), credential: new DefaultAzureCredential());
 
-                string keyUri = keyBundle.Key.Kid;
+                var keyBundle = kvClient.CreateKeyAsync(keyName, KeyType.Rsa).GetAwaiter().GetResult();
+
+                //KeyVaultClient kvClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(GetToken));
+                //var keyBundle = kvClient.CreateKeyAsync(vault.VaultUri, keyName, Microsoft.Azure.KeyVault.WebKey.JsonWebKeyType.Rsa,
+                //    keyOps: Microsoft.Azure.KeyVault.WebKey.JsonWebKeyOperation.AllOperations).GetAwaiter().GetResult();
+
+                string keyUri = keyBundle.Value.Key.Id;
 
                 // Work around for SQL server key name must be formatted as "vault_key_version"
                 string serverKeyName = $"{vaultName}_{keyName}_" +
@@ -155,7 +161,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                 // Authenticate
                 var credentials = SdkContext.AzureCredentialsFactory.FromFile(Environment.GetEnvironmentVariable("AZURE_AUTH_LOCATION"));
 
-                var azure = Azure
+                var azure = Microsoft.Azure.Management.Fluent.Azure
                     .Configure()
                     .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
                     .Authenticate(credentials)

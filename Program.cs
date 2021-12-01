@@ -1,27 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using Azure.Identity;
-using Azure.Security.KeyVault.Keys;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.KeyVault.WebKey;
-using Microsoft.Azure.Management.Fluent;
-using Microsoft.Azure.Management.KeyVault.Fluent.Models;
-using Microsoft.Azure.Management.Network.Fluent.Models;
-using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
-using Microsoft.Azure.Management.Samples.Common;
-using Microsoft.Azure.Management.Sql.Fluent;
-using Microsoft.Azure.Management.Sql.Fluent.Models;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Azure.Identity;
+using Azure.Security.KeyVault.Keys;
+using Microsoft.Azure.Management.Fluent;
+using Microsoft.Azure.Management.KeyVault.Fluent.Models;
+using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
+using Microsoft.Azure.Management.Samples.Common;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Newtonsoft.Json;
 
 namespace ManageSqlServerKeysWithAzureKeyVaultKey
 {
@@ -93,10 +87,6 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                 var kvClient = new KeyClient(vaultUri: new Uri(vault.VaultUri), credential: new DefaultAzureCredential());
 
                 var keyBundle = kvClient.CreateKeyAsync(keyName, KeyType.Rsa).GetAwaiter().GetResult();
-
-                //KeyVaultClient kvClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(GetToken));
-                //var keyBundle = kvClient.CreateKeyAsync(vault.VaultUri, keyName, Microsoft.Azure.KeyVault.WebKey.JsonWebKeyType.Rsa,
-                //    keyOps: Microsoft.Azure.KeyVault.WebKey.JsonWebKeyOperation.AllOperations).GetAwaiter().GetResult();
 
                 string keyUri = keyBundle.Value.Key.Id;
 

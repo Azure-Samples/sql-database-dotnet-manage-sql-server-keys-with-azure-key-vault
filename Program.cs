@@ -39,7 +39,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
          *  - Create, get, list and delete SQL Server Keys
          *  - Delete SQL Server
          */
-        public static void RunSample(IAzure azure)
+        public static async void RunSample(IAzure azure)
         {
             try
             {
@@ -84,9 +84,9 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                 // Create a SQL server key with Azure Key Vault key.
                 Utilities.Log("Creating a SQL server key with Azure Key Vault key");
 
-                var kvClient = new KeyClient(vaultUri: new Uri(vault.VaultUri), credential: new DefaultAzureCredential());
+                var kvClient = new KeyClient(new Uri(vault.VaultUri), new DefaultAzureCredential());
 
-                var keyBundle = kvClient.CreateKeyAsync(keyName, KeyType.Rsa).GetAwaiter().GetResult();
+                var keyBundle = await kvClient.CreateKeyAsync(keyName, KeyType.Rsa);
 
                 string keyUri = keyBundle.Value.Key.Id;
 
@@ -143,7 +143,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
             }
         }
 
-        public static void Main(string[] args)
+        public async static void Main(string[] args)
         {
             try
             {

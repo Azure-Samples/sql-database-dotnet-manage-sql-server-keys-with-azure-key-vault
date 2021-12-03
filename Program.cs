@@ -39,7 +39,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
          *  - Create, get, list and delete SQL Server Keys
          *  - Delete SQL Server
          */
-        public static async void RunSample(IAzure azure)
+        public static async Task RunSample(IAzure azure)
         {
             try
             {
@@ -143,7 +143,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
             }
         }
 
-        public async static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                 Utilities.Log("Selected subscription: " + azure.SubscriptionId);
 
 
-                RunSample(azure);
+                await RunSample(azure);
             }
             catch (Exception e)
             {

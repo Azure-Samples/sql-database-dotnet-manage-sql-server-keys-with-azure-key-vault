@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,7 +20,7 @@
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.5.0" />
 		<PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.2.0" />
-		<PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.20" />
+		<PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
 		<PackageReference Include="Microsoft.Azure.Management.Fluent" Version="1.36.1" />
 		<PackageReference Include="CoreFTP" Version="1.2.0" />
 		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="0.0.2-preview" />

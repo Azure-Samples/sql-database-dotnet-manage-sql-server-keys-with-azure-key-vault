@@ -5,9 +5,6 @@ using Azure;
 using Azure.Core;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Security.KeyVault.Keys;
@@ -70,8 +67,7 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                 Utilities.Log("Creating an Azure Key Vault and set the access policies...");
                 var tenantId = Environment.GetEnvironmentVariable("TENANT_ID");
                 var objectId = Environment.GetEnvironmentVariable("OBJECT_ID");
-                var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
-                if (tenantId == null || objectId == null || clientId==null)
+                if (tenantId == null || objectId == null)
                 {
                     throw new ArgumentNullException("TenantId and ObjectId is null");
                 }
@@ -104,22 +100,6 @@ namespace ManageSqlServerKeysWithAzureKeyVaultKey
                     }
                 };
                 var keyVault = (await resourceGroup.GetKeyVaults().CreateOrUpdateAsync(WaitUntil.Completed, keyVaultName, content)).Value;
-                //Utilities.Log("Waiting 3 minutes to delyment...");
-                //Thread.Sleep(TimeSpan.FromMinutes(3));
-                //var operationKind = AccessPolicyUpdateKind.Add;
-                //var permissions = new IdentityAccessPermissions()
-                //{
-                //    Keys =
-                //    {
-                //        IdentityAccessKeyPermission.All
-                //    }
-                //};
-                //var policy = new KeyVaultAccessPolicy(Guid.Parse(tenantId), objectId, permissions);
-                //var accessPolicies = new List<KeyVaultAccessPolicy>();
-                //accessPolicies.Add(policy);
-                //var AccessPolicyPropertie = new KeyVaultAccessPolicyProperties(accessPolicies);
-                //var keyVaultAccessPolicyParameters = new KeyVaultAccessPolicyParameters(AccessPolicyPropertie);
-                //_ = await keyVault.UpdateAccessPolicyAsync(operationKind, keyVaultAccessPolicyParameters);
                 Utilities.Log("Waiting 3 minutes to delyment...");
                 Thread.Sleep(TimeSpan.FromMinutes(3));
                 Utilities.Log($"Created an Azure Key Vault and set the access policies with KeyVault name: {keyVault.Data.Name}");
